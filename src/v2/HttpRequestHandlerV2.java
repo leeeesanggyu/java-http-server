@@ -9,11 +9,11 @@ import java.net.Socket;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static util.Logger.log;
 
-public class HttpRequestHandler implements Runnable {
+public class HttpRequestHandlerV2 implements Runnable {
 
     private final Socket socket;
 
-    public HttpRequestHandler(Socket socket) {
+    public HttpRequestHandlerV2(Socket socket) {
         this.socket = socket;
     }
 

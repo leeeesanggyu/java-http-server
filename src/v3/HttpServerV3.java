@@ -1,4 +1,6 @@
-package v2;
+package v3;
+
+import v2.HttpRequestHandlerV2;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -8,12 +10,12 @@ import java.util.concurrent.Executors;
 
 import static util.Logger.log;
 
-public class HttpServerV2 {
+public class HttpServerV3 {
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
     private final int port;
 
-    public HttpServerV2(int port) {
+    public HttpServerV3(int port) {
         this.port = port;
     }
 
@@ -23,7 +25,7 @@ public class HttpServerV2 {
 
             while (true) {
                 Socket socket = serverSocket.accept();
-                executorService.submit(new HttpRequestHandlerV2(socket));
+                executorService.submit(new HttpRequestHandlerV3(socket));
             }
         }
     }
