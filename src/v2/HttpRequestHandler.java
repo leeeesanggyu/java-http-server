@@ -1,36 +1,25 @@
-package v1;
+package v2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static util.Logger.log;
 
-public class HttpServerV1 {
+public class HttpRequestHandler implements Runnable {
 
-    private final int port;
+    private final Socket socket;
 
-    public HttpServerV1(int port) {
-        this.port = port;
+    public HttpRequestHandler(Socket socket) {
+        this.socket = socket;
     }
 
-    public void start() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(port);
-        log("서버 시작 port: " + port);
-
-        while (true) {
-            Socket socket = serverSocket.accept();
-            process(socket);
-        }
-    }
-
-    private void process(Socket socket) throws IOException {
-        try(socket;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), UTF_8));
+    @Override
+    public void run() {
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), UTF_8));
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), false, UTF_8)) {
 
             String requestToString = requestToString(reader);
@@ -46,7 +35,23 @@ public class HttpServerV1 {
             sleep();
             responseToClient(writer);
             log("HTTP 응답 전달 완료");
+            socket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+    }
+
+    private String requestToString(BufferedReader reader) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.isEmpty()) {
+                break;
+            }
+            sb.append(line).append("\n");
+        }
+        return sb.toString();
     }
 
     private void responseToClient(PrintWriter writer) {
@@ -65,18 +70,6 @@ public class HttpServerV1 {
 
         writer.println(response);
         writer.flush();
-    }
-
-    private String requestToString(BufferedReader reader) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            if (line.isEmpty()) {
-                break;
-            }
-            sb.append(line).append("\n");
-        }
-        return sb.toString();
     }
 
     private void sleep() {

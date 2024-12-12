@@ -1,8 +1,10 @@
 package v1;
 
+import v2.HttpServerV2;
+
 import java.io.IOException;
 
-public class ServerMain {
+public class ServerMainV1 {
 
     private static final int PORT = 12345;
 
