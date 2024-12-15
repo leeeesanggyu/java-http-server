@@ -1,5 +1,7 @@
 package v5;
 
+import httpserver.ServletManager;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,9 +14,11 @@ public class HttpServerV5 {
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
     private final int port;
+    private final ServletManager servletManager;
 
-    public HttpServerV5(int port) {
+    public HttpServerV5(int port, ServletManager servletManager) {
         this.port = port;
+        this.servletManager = servletManager;
     }
 
     public void start() throws IOException {
@@ -23,7 +27,7 @@ public class HttpServerV5 {
 
             while (true) {
                 Socket socket = serverSocket.accept();
-                executorService.submit(new HttpRequestHandlerV5(socket));
+                executorService.submit(new HttpRequestHandlerV5(socket, servletManager));
             }
         }
     }
