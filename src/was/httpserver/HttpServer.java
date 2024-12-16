@@ -1,7 +1,4 @@
-package was.v6;
-
-import was.httpserver.ServletManager;
-import was.v5.HttpRequestHandlerV5;
+package was.httpserver;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -11,13 +8,13 @@ import java.util.concurrent.Executors;
 
 import static util.Logger.log;
 
-public class HttpServerV6 {
+public class HttpServer {
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
     private final int port;
     private final ServletManager servletManager;
 
-    public HttpServerV6(int port, ServletManager servletManager) {
+    public HttpServer(int port, ServletManager servletManager) {
         this.port = port;
         this.servletManager = servletManager;
     }
@@ -28,7 +25,7 @@ public class HttpServerV6 {
 
             while (true) {
                 Socket socket = serverSocket.accept();
-                executorService.submit(new HttpRequestHandlerV6(socket, servletManager));
+                executorService.submit(new HttpRequestHandler(socket, servletManager));
             }
         }
     }

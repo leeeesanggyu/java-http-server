@@ -1,8 +1,4 @@
-package was.v5;
-
-import was.httpserver.HttpRequest;
-import was.httpserver.HttpResponse;
-import was.httpserver.ServletManager;
+package was.httpserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,12 +9,12 @@ import java.net.Socket;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static util.Logger.log;
 
-public class HttpRequestHandlerV5 implements Runnable {
+public class HttpRequestHandler implements Runnable {
 
     private final Socket socket;
     private final ServletManager servletManager;
 
-    public HttpRequestHandlerV5(Socket socket, ServletManager servletManager) {
+    public HttpRequestHandler(Socket socket, ServletManager servletManager) {
         this.socket = socket;
         this.servletManager = servletManager;
     }

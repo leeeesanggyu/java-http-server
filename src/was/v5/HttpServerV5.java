@@ -1,5 +1,6 @@
 package was.v5;
 
+import was.httpserver.HttpRequestHandler;
 import was.httpserver.ServletManager;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class HttpServerV5 {
 
             while (true) {
                 Socket socket = serverSocket.accept();
-                executorService.submit(new HttpRequestHandlerV5(socket, servletManager));
+                executorService.submit(new HttpRequestHandler(socket, servletManager));
             }
         }
     }
